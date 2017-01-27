@@ -1,0 +1,219 @@
+<template name="posts">
+	<div class="container">
+		<header class="post-list">
+			<h2>Recent Blog Posts</h2>
+			{{#if currentUser}}
+				<a href="{{pathFor 'add_post'}}" class="btn btn-primary btn-add-post">Add Post</a>
+			{{/if}}
+		</header>
+
+		<div class="row">
+			<div class="col-md-8">
+				{{#each posts}}
+					{{> postThumb}}
+				{{/each}}	
+			</div>
+		
+		<div class="col-md-4">
+				{{> sidebar }}
+	
+			</div>
+		</div>
+	</div>
+</template>
+
+
+<template name="postThumb">
+	<article class="post">
+        <a href="#" class="btn btn-danger pull-right delete-post">Delete</a>
+        <a href="{{pathFor 'edit_post'}}" class="btn btn-default pull-right">Edit</a>
+        <h3><a href="{{pathFor 'postSingle'}}">{{title}}</a></h3>
+        <ul class="list-inline">			  
+        	<li><i class="fa fa-clone"></i> <a href="/categories/{{category}}">{{capFirst category}}</a></li>
+        	<li><i class="fa fa-user"></i> <a href="/{{username}}">{{author}}</a></li>	
+        	<li><i class="fa fa-clock-o"></i>{{formateDate createdAt}}</li>
+        </ul>
+        {{#if postImage}}
+        <div class="postImage">
+	        <img class="postImage" src="{{postImage}}">        	
+        </div>
+        {{/if}}
+        <p class="post-body">{{body}}</p>
+        <hr>
+        <ul class="list-inline">
+        	<li><a href=""><i class="fa fa-thumbs-up"></i></a> 20</li>
+        	<li><a href=""><i class="fa fa-comment"></i></a> 123</li>
+        	<li><a href=""><i class="fa fa-share-alt"></i></a></li>			 
+        </ul>
+    </article>
+
+</template>
+
+
+ <template name="postSingle">
+    <div class="container">
+        <div class="row need-top-margin">
+            <div class="col-md-8">
+            	<article class="post">
+			        <h3>{{postSingle.title}}</h3>
+			        <ul class="list-inline">			  
+			        	<li><i class="fa fa-clone"></i> <a href="/categories/{{postSingle.category}}">{{capFirst postSingle.category}}</a></li>
+			        	<li><i class="fa fa-user"></i> <a href="/{{username}}">{{postSingle.author}}</a></li>	
+			        	<li><i class="fa fa-clock-o"></i>{{formateDate postSingle.createdAt}}</li>
+			        </ul>
+			        <hr>
+			        <img class="postImage" src="{{postSingle.postImage}}">
+			        <hr>
+			        <p class="post-body">{{postSingle.body}}</p>
+			        <hr>
+			        <ul class="list-inline">
+			        	<li><a href=""><i class="fa fa-thumbs-up"></i></a> 20</li>
+			        	<li><a href=""><i class="fa fa-comment"></i></a> {{commentCount}}</li>
+			        	<li><a href=""><i class="fa fa-share-alt"></i></a></li>			 
+			        </ul>
+			    </article>
+
+			    {{> comments}}
+                
+            </div>
+
+            <div class="col-md-4">
+                {{> sidebar }}
+            </div>
+        </div> 
+    </div> 
+</template>
+
+<template name="comments">
+	{{#if commentCount}}
+		<h3>{{commentCount}} comments</h3>
+	{{else}}
+		<p>No comment yet</p>
+	{{/if}}
+	<h3></h3>
+
+    {{#if currentUser}}
+	<form class="post-comment">
+		<div class="form-group">
+	        <label for="commentBox">Reply</label>
+	        <input type="text" id="commentBox" name="commentBox" class="form-control" placeholder="Reply" required autofocus>
+	    </div>
+	    <button type="submit" class="btn btn-primary">Reply</button>
+    </form>
+	{{/if}}
+	<div class="comments">
+		<ul class="comments">
+	    	{{#each postSingle.comments}}
+	    		<li class="comment">
+	    			<div class="row">
+	    				<div class="col-md-1">
+		    				<img src="img/profile1.jpg" class="img-circle img-comment" width="50px">
+		    				<p>20 posts</p>		
+	    				</div>
+	    				<div class="col-md-11">
+	    					<h4 class="username">{{user}}</h4>
+			    			<small>{{formateDate createdAt}}</small> 
+			    			<p>{{text}}</p>
+			    			<hr>
+			    			<ul class="list-inline">
+					        	<li><a href=""><i class="fa fa-thumbs-up"></i></a> 20</li>
+					        	<li><a href=""><i class="fa fa-share"></i>Reply</a></li>
+					        </ul>	
+	    				</div>
+	    			</div>		    		
+	    		</li>
+	    	{{/each}}
+    	</ul>
+    </div>
+
+</template>
+
+<template name="add_post">
+	<div class="container">
+		<div class="row need-top-margin">
+			<div class="col-md-6 col-md-offset-3">
+				<h3>Add New Blog</h3>
+				<hr>
+
+				<form class="post-form">
+					
+					<div class="form-group">
+	                    <label for="title">Title</label>
+	                    <input type="text" id="title" name="title" class="form-control" placeholder="Post Title" required autofocus>
+	                </div>
+
+	                <div class="form-group">
+	                    <label for="cat">Select Categories</label>
+	                    <select class="form-control" id="cat" name="category" required>
+						    {{#each categories}}
+						    	<option value="{{title}}">{{title}}</option>
+						    {{/each}}
+						</select>
+	                </div>
+
+	                <div class="form-group">
+	                    <label for="body">Description</label>
+	                    <textarea id="body" name="body" class="form-control" placeholder="Enter post description" rows="12" required autofocus></textarea>
+	                </div>
+
+	                <div class="form-group">
+	                    <label for="postImage">Title</label>
+	                    <input type="file" id="postImage" name="postimage" required class="form-control">
+	                </div>
+
+	                <button type="submit" class="btn btn-primary">Submit</button>
+
+	        	</form>
+			
+			</div>
+		</div>
+	</div>
+</template>
+
+<template name="edit_post">
+	<div class="container">
+		<div class="row need-top-margin">
+			<div class="col-md-6 col-md-offset-3">
+				<h3>Add New Blog</h3>
+				<hr>
+
+				<form class="post-form">
+					
+					<div class="form-group">
+	                    <label for="title">Title</label>
+	                    <input type="text" id="title" name="title" class="form-control" placeholder="Post Title" value="{{posts.title}}" required autofocus>
+	                </div>
+
+	                <div class="form-group">
+	                    <label for="cat">Select Categories</label>
+	                    <select class="form-control" id="cat" name="category"  required>
+						    {{#each categories}}
+							 <!--    {{#if title == posts.category}}
+						    		{{var class="selected"}}
+						    	{{else}}
+						    		{{var class=""}}
+						    	{{/if}}	 -->			
+						    	<option selected="{{selected}}">{{title}}</option>						    	
+						    {{/each}}
+						</select>
+	                </div>
+
+	                <div class="form-group">
+	                    <label for="body">Description</label>
+	                    <textarea id="body" name="body" class="form-control" placeholder="Enter post description" value="{{posts.body}}" rows="12" required autofocus></textarea>
+	                </div>
+
+	                <div class="form-group">
+	                    <label for="postImage">Title</label>
+	                    <input type="file" id="postImage" name="postimage" required class="form-control">
+	                </div>
+
+	                <button type="submit" class="btn btn-primary">Submit</button>
+
+	        	</form>
+			
+			</div>
+		</div>
+	</div>
+</template>
+

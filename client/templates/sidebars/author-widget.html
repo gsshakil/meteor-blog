@@ -1,0 +1,18 @@
+<template name="author_widget">
+	<div class="widget">
+		<h4>Authors</h4>
+		{{#each users}}
+			<div class="author-widget-list">
+				<div class="row">
+					<div class="col-md-2">
+						<img src="{{profilePic}}" class="" width="50px">
+					</div>
+					<div class="col-md-10">
+						<a href="{{pathFor 'authorProfile'}}"><p>{{name}}</p></a>
+						<small>{{articleCount}} Posts</small>
+					</div>
+				</div>		
+			</div>
+		{{/each}}		
+	</div>
+</template>

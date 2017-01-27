@@ -1,0 +1,30 @@
+<template name="authors">
+	<div class="container">
+		<h1>Authors</h1>
+		{{#each users}}
+			<div class="authorList">
+				<div class="row">
+					<div class="col-md-2">
+						<img src="{{profilePic}}" class="" width="160px">
+						<h3>{{articleCount}} Posts</h3>
+						<a href="#" class="btn btn-primary btn-block">Follow</a>
+					</div>
+					<div class="col-md-10">
+						<a href="{{pathFor 'authorProfile'}}"><h3>{{name}}</h3></a>
+						<h5>{{username}}</h5>
+						<!-- <h6>{{email}}</h6> -->
+						<hr>
+						<p>{{bio}}</p>
+						<hr>
+						<ul class="list-inline">
+							<li><a href="{{facebook}}"><i class="fa fa-facebook"></i></a></li>
+							<li><a href="{{google}}"><i class="fa fa-google"></i></a></li>
+							<li><a href="{{twitter}}"><i class="fa fa-twitter"></i></a></li>
+							<li><a href="{{website}}"><i class="fa fa-globe"></i></a></li>
+						</ul>
+					</div>
+				</div>		
+			</div>
+		{{/each}}
+	</div>
+</template>
